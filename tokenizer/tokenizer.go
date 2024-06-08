@@ -1,7 +1,5 @@
 package tokenizer
 
-import "log"
-
 type TokenType int
 
 const (
@@ -53,22 +51,7 @@ func (tokenizer *Tokenizer) Tokenize(expression []byte) []*Token {
 		case '+':
 			token = NewToken(string(char), PLUS)
 		case '-':
-			lookaheadChar := lookahead(expression, current)
-			tokensLength := len(tokenizer.tokens)
-
-			// example: 4-3 == 4 - 3, should result 4,-,3
-			// example: -3 should result -3 and --3 should result -, -3
-			isLastTokenNumber := tokensLength > 0 && tokenizer.tokens[tokensLength-1].TokenType == NUMBER
-
-			if isNumber(lookaheadChar) && (!isLastTokenNumber || tokensLength == 0) {
-				token, continueAt := numberToken(expression, current)
-				current = continueAt
-				end = continueAt == 0
-				tokenizer.tokens = append(tokenizer.tokens, token)
-				continue
-			} else {
-				token = NewToken(string(char), MINUS)
-			}
+			token = NewToken(string(char), MINUS)
 		case '*':
 			token = NewToken(string(char), STAR)
 		case '/':
@@ -130,15 +113,4 @@ func numberToken(expression []byte, start int) (*Token, int) {
 	}
 
 	return NewToken(string(number), NUMBER), continueAt
-}
-
-// look one character ahead of the current pointer
-func lookahead(expression []byte, current int) byte {
-	expressionLength := len(expression)
-
-	if (current + 1) > expressionLength {
-		log.Fatal("Tried to lookahead after the end of the expression")
-	}
-
-	return expression[current+1]
 }
