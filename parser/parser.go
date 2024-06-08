@@ -76,20 +76,16 @@ func (parser *Parser) pushToStack(operator *tokenizer.Token) {
 			return
 		}
 
-		if stackedOperatorPrecedence > operatorPrecedence {
-			parser.output = append(parser.output, string(stackedOperator.Lexeme))
-			parser.stack = parser.stack[:stackTop]
-		}
+		parser.output = append(parser.output, string(stackedOperator.Lexeme))
+		parser.stack = parser.stack[:stackTop]
 	}
 }
 
 // convert an infix expression to a RPN expression using the Shunting Yard algorithm
 func (parser *Parser) Parse(tokens []*tokenizer.Token) []string {
 	for _, token := range tokens {
-
 		if token.TokenType == tokenizer.NUMBER {
 			parser.output = append(parser.output, string(token.Lexeme))
-			continue
 		} else {
 			parser.pushToStack(token)
 		}
