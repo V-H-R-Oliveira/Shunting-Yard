@@ -11,6 +11,7 @@ const (
 	POWER
 	LEFT_PARENTHESIS
 	RIGHT_PARENTHESIS
+	UNARY // Not a token, but a type for unary
 )
 
 type Token struct {
