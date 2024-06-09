@@ -5,7 +5,6 @@ import (
 	"shunting-yard/m/tokenizer"
 )
 
-// TODO: Write tests
 const UNARY_LEXEME = "n"
 
 type Parser struct {
